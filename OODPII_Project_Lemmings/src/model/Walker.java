@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.Node;
+
 public class Walker implements Jobs
 {
 	private static Walker instance = null;
@@ -15,4 +17,12 @@ public class Walker implements Jobs
 			instance = new Walker();
 		return instance;
 	}
+
+	@Override
+	public Node createView(int x, int y)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

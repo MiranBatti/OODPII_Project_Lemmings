@@ -12,6 +12,5 @@ public class GameController
 	
 	public void spawnLemmings()
 	{
-		lem = new Lemming(30, 5);
 	}
 }

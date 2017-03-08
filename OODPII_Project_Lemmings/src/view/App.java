@@ -8,10 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Lemming;
 
 public class App extends Application {
 
-	private Layer field;
+	private Layer gameField;
 	private Layer jobField;
 	private AnimationTimer timer;
 	
@@ -20,16 +21,19 @@ public class App extends Application {
 		try 
 		{
 			BorderPane root = new BorderPane();
-			field = new Layer(Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT);
+			gameField = new Layer(Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT);
 			jobField = new Layer(Settings.SCENE_HEIGHT, Settings.SCENE_HEIGHT/4);
 			jobField.setBackground("FFFF00");
 			
 			Pane pane = new Pane();
-			pane.getChildren().addAll(field);
+			pane.getChildren().addAll(gameField);
 			root.setCenter(pane);
 			
 			pane.getChildren().addAll(jobField);			
 			root.setBottom(jobField);
+			
+			Lemming lem = new Lemming(30, 30, gameField);
+			lem.move();
 			
 			Scene scene = new Scene(root);			
 			primaryStage.setScene(scene);
