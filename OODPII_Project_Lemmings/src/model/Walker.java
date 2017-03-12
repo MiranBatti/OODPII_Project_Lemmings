@@ -17,7 +17,7 @@ public class Walker implements Jobs
 			instance = new Walker();
 		return instance;
 	}
-
+	
 	@Override
 	public Node createView(int x, int y)
 	{
