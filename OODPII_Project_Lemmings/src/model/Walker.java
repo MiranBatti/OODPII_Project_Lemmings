@@ -1,6 +1,9 @@
 package model;
 
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import view.Settings;
 
 public class Walker implements Jobs
 {
@@ -21,8 +24,26 @@ public class Walker implements Jobs
 	@Override
 	public Node createView(int x, int y)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Rectangle rectangle = new Rectangle(Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT);
+		
+		rectangle.setX(x);
+		rectangle.setY(y);
+		
+		rectangle.setStroke(Color.RED);
+		rectangle.setFill(Color.INDIANRED);
+
+		return rectangle;
+	}
+	
+	@Override
+	public Node changeView(Node node, int x, int y)
+	{
+		Rectangle rectangle = (Rectangle)node;
+		rectangle.relocate(node.getLayoutX(), node.getLayoutY());
+		rectangle.setStroke(Color.RED);
+		rectangle.setFill(Color.MEDIUMVIOLETRED);
+		
+		return rectangle;
 	}
 	
 }

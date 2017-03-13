@@ -19,7 +19,7 @@ public class Lemming extends Region
 	{
 		this.x = x;
 		this.y = y;
-		setJob(Faller.getInstance());
+		job = Faller.getInstance();
 		
 		scene_x = (int)Settings.SCENE_WIDTH - x;
 		
@@ -28,12 +28,17 @@ public class Lemming extends Region
 		layer.getChildren().add(this);
 	}
 	
-	public void setJob(Jobs job)
+	public void setJob(Jobs job, Layer layer)
 	{
 		this.job = job;
+		Node tmp = node;
+		relocate(node.getLayoutX(), node.getLayoutY());
+		getChildren().remove(node);
+		node = job.changeView(tmp, x, y);
+		getChildren().add(node);
 	}
 	
-	public Node createView()
+	private Node createView()
 	{
 		return job.createView(x, y);
 	}
@@ -47,6 +52,11 @@ public class Lemming extends Region
 			relocate(x--, y);
 		if(job.equals(Faller.getInstance()))
 			relocate(x, y++);
+	}
+	
+	public Node getBounds()
+	{
+		return node;
 	}
 	
 	private void collisionDetection()
