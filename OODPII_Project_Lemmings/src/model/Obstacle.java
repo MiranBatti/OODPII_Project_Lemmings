@@ -1,36 +1,33 @@
 package model;
 
 import javafx.scene.Node;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import view.Layer;
 
-public class Obstacle extends Region
+public class Obstacle extends Rectangle
 {
-	private double startX, startY, endX, endY;
+	private double x, y, width, height;
 	private Node node;
 	
-	public Obstacle(int startX, double d, double sceneWidth, double e, Layer layer)
+	public Obstacle(double x, double y, double width, double height, Layer layer)
 	{
-		this.startX = startX;
-		this.endX = sceneWidth;
-		this.startY = d;
-		this.endY = e;
+		this.x = x;
+		this.width = width;
+		this.y = y;
+		this.height = height;
 		
 		node = createView();
-		getChildren().add(node);
-		layer.getChildren().add(this);
+		layer.getChildren().add(node);
 	}
 
 	private Node createView()
 	{
-		Line line = new Line();
-		line.setStroke(Color.WHITE);
-		line.setStartX(startX);
-		line.setEndX(endX);
-		line.setStartY(startY);
-		line.setEndY(endY);
-		return line;
+		setStroke(Color.WHITE);
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
+		return this;
 	}
 }

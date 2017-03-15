@@ -36,14 +36,12 @@ public class Walker implements Jobs
 	}
 	
 	@Override
-	public Node changeView(Node node, int x, int y)
+	public Node changeView(Rectangle node, int x, int y)
 	{
-		Rectangle rectangle = (Rectangle)node;
-		rectangle.relocate(node.getLayoutX(), node.getLayoutY());
-		rectangle.setStroke(Color.RED);
-		rectangle.setFill(Color.MEDIUMVIOLETRED);
+		node.setStroke(Color.RED);
+		node.setFill(Color.MEDIUMVIOLETRED);
 		
-		return rectangle;
+		return node;
 	}
 	
 }

@@ -35,13 +35,10 @@ public class Faller implements Jobs
 	}
 
 	@Override
-	public Node changeView(Node node, int x, int y)
+	public Node changeView(Rectangle node, int x, int y)
 	{
-//		node.relocate(node.getLayoutX(), node.getLayoutY());
-		Rectangle rectangle = (Rectangle)node;
-		rectangle.relocate(x, y);
-		rectangle.setStroke(Color.BLUE);
-		rectangle.setFill(Color.BLUEVIOLET);
+		node.setStroke(Color.BLUE);
+		node.setFill(Color.BLUEVIOLET);
 		
 		return node;
 	}

@@ -1,7 +1,10 @@
 package model;
 
+import java.util.LinkedList;
+
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
 import view.Layer;
 import view.Settings;
 
@@ -30,12 +33,13 @@ public class Lemming extends Region
 	
 	public void setJob(Jobs job, Layer layer)
 	{
+		//TODO: can not change jobs while falling
 		this.job = job;
-		Node tmp = node;
-		relocate(node.getLayoutX(), node.getLayoutY());
+		Rectangle tmp = (Rectangle)node;
 		getChildren().remove(node);
 		node = job.changeView(tmp, x, y);
 		getChildren().add(node);
+		relocate(node.getLayoutX(), node.getLayoutY());		
 	}
 	
 	private Node createView()
@@ -52,6 +56,7 @@ public class Lemming extends Region
 			relocate(x--, y);
 		if(job.equals(Faller.getInstance()))
 			relocate(x, y++);
+		System.out.println(y);
 	}
 	
 	public Node getBounds()
@@ -65,6 +70,22 @@ public class Lemming extends Region
 			direction = LEFT;
 		if(x == scene_x - Settings.SCENE_WIDTH)
 			direction = RIGHT;
+	}
+
+	public boolean resolveCollisions(LinkedList<Obstacle> obstacles)
+	{
+        for (Obstacle s: obstacles) {
+            if (s instanceof Rectangle) {
+                Rectangle r = (Rectangle)s;
+                if (x <= r.getX() + r.getWidth()
+                        && x + Settings.LEMMINGS_WIDTH >= r.getX()
+                        && y <= r.getY() + r.getHeight()
+                        && y + Settings.LEMMINGS_HEIGHT >= r.getY()) {
+                    return true;
+                }
+            }
+        }
+        return false;
 	}
 	
 }
