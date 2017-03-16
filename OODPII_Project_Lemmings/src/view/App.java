@@ -44,9 +44,8 @@ public class App extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Lemmings");
 			primaryStage.show();
-			
 			//good debug thing
-//			scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> System.out.println(e.getPickResult())); 
+			scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> System.out.println(e.getPickResult())); 
 			createLevel();
 			startGame();
 		} catch(Exception e) 
@@ -59,6 +58,7 @@ public class App extends Application {
     {
 //    	Obstacle ob = new Obstacle(0, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, gameField);
     	Lemming lem = new Lemming(150, 30, gameField);
+		lem.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> lem.setJob(Walker.getInstance()));
 		
         // start game
         timer = new AnimationTimer() 
@@ -66,9 +66,8 @@ public class App extends Application {
             @Override
             public void handle(long now) 
             {
-    			if(!lem.resolveCollisions(obstacles))
+    			lem.resolveCollisions(obstacles);
     				lem.move();
-    			lem.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> lem.setJob(Walker.getInstance(), gameField));
             }
         };
         timer.start();
@@ -77,7 +76,8 @@ public class App extends Application {
     private void createLevel()
     {
     	obstacles = new LinkedList<Obstacle>();
-    	obstacles.add(new Obstacle(150, 400 - 200, 200, 500, gameField));
+    	obstacles.add(new Obstacle(150, 200, 200, 500, gameField));
+    	obstacles.add(new Obstacle(450, 300, 200, 500, gameField));
     }
     
 	public static void main(String[] args) {

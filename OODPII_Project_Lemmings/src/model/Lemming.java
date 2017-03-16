@@ -15,8 +15,8 @@ public class Lemming extends Region
 	private Node node;
 	private final int RIGHT = 0;
 	private final int LEFT = 1;
-	private int direction = RIGHT;
-	private int scene_x;
+	private int direction = LEFT;
+	private int relative_x;
 	
 	public Lemming(int x, int y, Layer layer)
 	{
@@ -24,14 +24,14 @@ public class Lemming extends Region
 		this.y = y;
 		job = Faller.getInstance();
 		
-		scene_x = (int)Settings.SCENE_WIDTH - x;
+		relative_x = (int)Settings.SCENE_WIDTH - x;
 		
 		node = createView();
 		getChildren().add(node);
 		layer.getChildren().add(this);
 	}
 	
-	public void setJob(Jobs job, Layer layer)
+	public void setJob(Jobs job)
 	{
 		//TODO: can not change jobs while falling
 		this.job = job;
@@ -56,7 +56,6 @@ public class Lemming extends Region
 			relocate(x--, y);
 		if(job.equals(Faller.getInstance()))
 			relocate(x, y++);
-		System.out.println(y);
 	}
 	
 	public Node getBounds()
@@ -66,26 +65,29 @@ public class Lemming extends Region
 	
 	private void collisionDetection()
 	{
-		if(x == scene_x)
+		if(x == relative_x)
 			direction = LEFT;
-		if(x == scene_x - Settings.SCENE_WIDTH)
+		if(x == relative_x - Settings.SCENE_WIDTH)
 			direction = RIGHT;
 	}
 
-	public boolean resolveCollisions(LinkedList<Obstacle> obstacles)
+	public void resolveCollisions(LinkedList<Obstacle> obstacles)
 	{
-        for (Obstacle s: obstacles) {
+        for (Obstacle s : obstacles) {
             if (s instanceof Rectangle) {
-                Rectangle r = (Rectangle)s;
-                if (x <= r.getX() + r.getWidth()
-                        && x + Settings.LEMMINGS_WIDTH >= r.getX()
-                        && y <= r.getY() + r.getHeight()
-                        && y + Settings.LEMMINGS_HEIGHT >= r.getY()) {
-                    return true;
+                Rectangle r = s;
+                if (x+r.getX() < r.getX() + r.getWidth()
+                    && x+r.getX() + Settings.LEMMINGS_WIDTH >= r.getX()
+                    && y < r.getY() + r.getHeight()
+                    && y + Settings.LEMMINGS_HEIGHT >= r.getY()) 
+                {
+                	y = (int) (r.getY() - Settings.LEMMINGS_HEIGHT);
+                	setJob(Walker.getInstance());
                 }
+                else if(x+r.getX() > r.getX() + r.getWidth() || x+r.getX() + Settings.LEMMINGS_WIDTH < r.getX()) //if at edge
+                	setJob(Faller.getInstance());
             }
         }
-        return false;
 	}
 	
 }
