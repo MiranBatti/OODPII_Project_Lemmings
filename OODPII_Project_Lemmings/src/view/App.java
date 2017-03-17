@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.CollisionDetector;
 import model.Lemming;
 import model.Obstacle;
 import model.Walker;
@@ -57,17 +58,17 @@ public class App extends Application {
     private void startGame()
     {
 //    	Obstacle ob = new Obstacle(0, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, gameField);
-    	Lemming lem = new Lemming(150, 30, gameField);
+    	Lemming lem = new Lemming(150, 0, gameField);
 		lem.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> lem.setJob(Walker.getInstance()));
-		
+		CollisionDetector cd = new CollisionDetector(lem, obstacles);
+		lem.attach(cd);
         // start game
         timer = new AnimationTimer() 
         {
             @Override
             public void handle(long now) 
             {
-    			lem.resolveCollisions(obstacles);
-    				lem.move();
+    			lem.move();
             }
         };
         timer.start();

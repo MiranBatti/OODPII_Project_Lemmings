@@ -24,6 +24,7 @@ public class Obstacle extends Rectangle
 	private Node createView()
 	{
 		setStroke(Color.WHITE);
+		setFill(Color.ALICEBLUE);
 		setX(x);
 		setY(y);
 		setWidth(width);
