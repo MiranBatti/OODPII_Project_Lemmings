@@ -5,12 +5,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Layer;
 
-public class Obstacle extends Rectangle
+public class Goal extends Rectangle
 {
 	private final double x, y, width, height;
 	private Node node;
 	
-	public Obstacle(double x, double y, double width, double height, Layer layer)
+	public Goal(double x, double y, double width, double height, Layer layer)
 	{
 		this.x = x;
 		this.width = width;
@@ -23,8 +23,8 @@ public class Obstacle extends Rectangle
 
 	private Node createView()
 	{
-		setStroke(Color.WHITE);
-		setFill(Color.ALICEBLUE);
+		setStroke(Color.GREENYELLOW);
+		setFill(Color.GREEN);
 		setX(x);
 		setY(y);
 		setWidth(width);

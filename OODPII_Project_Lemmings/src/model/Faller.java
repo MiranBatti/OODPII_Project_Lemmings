@@ -23,10 +23,7 @@ public class Faller implements Jobs
 	
 	public Node createView(int x, int y)
 	{
-		Rectangle rectangle = new Rectangle(Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT);
-		
-		rectangle.setX(x);
-		rectangle.setY(y);
+		Rectangle rectangle = new Rectangle(x, y, Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT);
 		
 		rectangle.setStroke(Color.BLUE);
 		rectangle.setFill(Color.BLUEVIOLET);

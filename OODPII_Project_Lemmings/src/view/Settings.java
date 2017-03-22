@@ -9,5 +9,8 @@ public class Settings
 	public static final double LEMMINGS_WIDTH = 10;
 	public static final double LEMMINGS_HEIGHT = 15;
 	
-	public static final double SPRITE_MAX_SPEED = 2;
+	public static final double SPRITE_MAX_SPEED = 1;
+	
+	public static final double GOAL_HEIGHT = 15;
+	public static final double GOAL_WIDTH = 10;
 }

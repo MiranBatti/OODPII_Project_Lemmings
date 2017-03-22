@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 import view.Layer;
 import view.Settings;
 
-public class Lemming extends Region
+public class Lemming extends Region implements Runnable
 {
 	private int x, y;
 	private Jobs job;
@@ -21,14 +21,13 @@ public class Lemming extends Region
 	private int relative_x;
 	private boolean isDead = false;
 	private List<Observer> observers = new ArrayList<Observer>();	
+	private Thread thread;
 	
 	public Lemming(int x, int y, Layer layer)
 	{
 		this.x = x;
 		this.y = y;
 		job = Faller.getInstance();
-		
-		relative_x = (int)Settings.SCENE_WIDTH - x;
 		
 		node = createView();
 		getChildren().add(node);
@@ -49,16 +48,18 @@ public class Lemming extends Region
 	{
 		return job.createView(x, y);
 	}
-	
+
 	public void move()
 	{
 		notifyAllObservers();
 		if(direction == RIGHT && !job.equals(Faller.getInstance()))
-			relocate(x++, y);
+			node.relocate(x++, y);
 		if(direction == LEFT && !job.equals(Faller.getInstance()))
-			relocate(x--, y);
+			node.relocate(x--, y);
 		if(job.equals(Faller.getInstance()))
-			relocate(x, y++);
+		{
+			node.relocate(x, y++);
+		}
 	}
 	
 	public Node getBounds()
@@ -79,12 +80,7 @@ public class Lemming extends Region
 		return x;
 	}
 
-	public int getRelativeX()
-	{
-		return relative_x;
-	}
-
-	public void setDirection(int direction)
+        	public void setDirection(int direction)
 	{
 		this.direction = direction;
 	} 		
@@ -102,6 +98,12 @@ public class Lemming extends Region
 	public void attach(Observer observer)
 	{
 	    observers.add(observer);		
+	}
+
+	@Override
+	public void run()
+	{
+		move();
 	}
 	
 	

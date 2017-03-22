@@ -1,19 +1,20 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.CollisionDetector;
 import model.Lemming;
 import model.Obstacle;
-import model.Walker;
 
 public class App extends Application {
 
@@ -39,7 +40,7 @@ public class App extends Application {
 			pane.getChildren().add(jobField);		
 			root.setBottom(jobField);
 			
-			pane.setPickOnBounds(false);						
+			pane.setPickOnBounds(false);	
 			
 			Scene scene = new Scene(root);	
 			primaryStage.setScene(scene);
@@ -57,18 +58,32 @@ public class App extends Application {
 
     private void startGame()
     {
-//    	Obstacle ob = new Obstacle(0, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT - Settings.SCENE_HEIGHT/8, gameField);
-    	Lemming lem = new Lemming(150, 0, gameField);
-		lem.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> lem.setJob(Walker.getInstance()));
-		CollisionDetector cd = new CollisionDetector(lem, obstacles);
-		lem.attach(cd);
+    	List<Lemming> lemmings = new ArrayList<>();
+    	int maxLemmings = 10;
+    	int currentLemmings = 0;
+    	while(currentLemmings < maxLemmings)
+    	{
+    		lemmings.add(new Lemming(150, 0, gameField));
+    		currentLemmings++;
+    	}
+
+		CollisionDetector cd = new CollisionDetector(lemmings, obstacles);
+		for (Lemming lemming : lemmings)
+		{
+			lemming.attach(cd);		
+    		Platform.runLater(lemming);			
+		}
+
         // start game
         timer = new AnimationTimer() 
         {
             @Override
             public void handle(long now) 
             {
-    			lem.move();
+            	for (Lemming lemming : lemmings)
+				{
+					lemming.run();
+				}
             }
         };
         timer.start();
@@ -77,8 +92,8 @@ public class App extends Application {
     private void createLevel()
     {
     	obstacles = new LinkedList<Obstacle>();
-    	obstacles.add(new Obstacle(150, 200, 200, 500, gameField));
-    	obstacles.add(new Obstacle(450, 300, 200, 500, gameField));
+    	obstacles.add(new Obstacle(150, 200, 200, 400, gameField));
+    	obstacles.add(new Obstacle(250, 300, 200, 500, gameField));
     }
     
 	public static void main(String[] args) {
