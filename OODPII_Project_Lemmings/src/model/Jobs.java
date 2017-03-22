@@ -5,6 +5,6 @@ import javafx.scene.shape.Rectangle;
 
 public interface Jobs
 {
-	public Node createView(int x, int y);
-	public Node changeView(Rectangle node, int x, int y);
+	public Node createView(double x, double y);
+	public Node changeView(Rectangle node, double x, double y);
 }

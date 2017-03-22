@@ -21,7 +21,7 @@ public class Faller implements Jobs
 		return instance;
 	}
 	
-	public Node createView(int x, int y)
+	public Node createView(double x, double y)
 	{
 		Rectangle rectangle = new Rectangle(x, y, Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT);
 		
@@ -32,7 +32,7 @@ public class Faller implements Jobs
 	}
 
 	@Override
-	public Node changeView(Rectangle node, int x, int y)
+	public Node changeView(Rectangle node, double x, double y)
 	{
 		node.setStroke(Color.BLUE);
 		node.setFill(Color.BLUEVIOLET);

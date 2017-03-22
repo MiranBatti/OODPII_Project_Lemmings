@@ -9,14 +9,16 @@ import view.Settings;
 
 public class CollisionDetector extends Observer
 {
-	public List<Obstacle> obstacles;
+	private List<Obstacle> obstacles;
 	private final int RIGHT = 0;
 	private final int LEFT = 1;
+	private Goal goal;
 
-	public CollisionDetector(List<Lemming> lemmings, List<Obstacle> obstacles)
+	public CollisionDetector(List<Lemming> lemmings, List<Obstacle> obstacles, Goal goal)
 	{
 		this.lemmings = lemmings;
 		this.obstacles = obstacles;
+		this.goal = goal;
 	}
 	
 	public void collisionDetection()
@@ -36,17 +38,16 @@ public class CollisionDetector extends Observer
 		for (Lemming lemming : lemmings) 
 		{
 	        for (Obstacle obstacle : obstacles) {
-	            if (obstacle instanceof Rectangle) {
-	                if (lemming.getX() < obstacle.getX() + obstacle.getWidth()
-	                    && lemming.getX() + Settings.LEMMINGS_WIDTH >= obstacle.getX()
-	                    && lemming.getY() < obstacle.getY() + obstacle.getHeight()
-	                    && lemming.getY() + Settings.LEMMINGS_HEIGHT >= obstacle.getY()) 
-	                {
-	                	lemming.setJob(Walker.getInstance());
-	                	falling = false;
-	                }
-	                detectObstacleEdge(lemming, obstacle, falling);
-	            }
+                if (lemming.getX() < obstacle.getX() + obstacle.getWidth()
+                    && lemming.getX() + Settings.LEMMINGS_WIDTH >= obstacle.getX()
+                    && lemming.getY() < obstacle.getY() + obstacle.getHeight()
+                    && lemming.getY() + Settings.LEMMINGS_HEIGHT >= obstacle.getY()) 
+                {
+                	if(lemming.getJob() == Faller.getInstance() || lemming.getJob() == Parachute.getInstance())
+                		lemming.setJob(Walker.getInstance());
+                	falling = false;
+                }
+                detectObstacleEdge(lemming, obstacle, falling);
 	        }
 		}
 	}
@@ -55,31 +56,36 @@ public class CollisionDetector extends Observer
 	{
         if(lemming.getX() > (obstacle.getX()+obstacle.getWidth()) || lemming.getX()+Settings.LEMMINGS_WIDTH < obstacle.getX() && falling) //if at edge
         {
-        	lemming.setJob(Faller.getInstance());
+        	if(lemming.getJob() != Parachute.getInstance())
+        		lemming.setJob(Faller.getInstance());
         	falling = true;
         }
 	}
 	
-	public void goalCollided()
+	public void goalCollided(Goal goal)
 	{
-		
+		for (Lemming lemming : lemmings) {
+			if(goal.contains(lemming.getX(), lemming.getY()))
+				lemming.setInGoal();
+		}
 	}
 	
-	public boolean fallOutOfBoundsDetection(List<Lemming> lemmings)
+	public void fallOutOfBoundsDetection(List<Lemming> lemmings)
 	{
 		for (Lemming lemming : lemmings)
 		{
 			if(lemming.getY() > Settings.SCENE_HEIGHT)
-				return true;
+				lemming.setIsDead();
 		}
-		return false;
 	}
 	
 	@Override
 	public void update()
 	{
+		fallOutOfBoundsDetection(lemmings);
 		collisionDetection();
 		collisionResolver(obstacles);
+		goalCollided(goal);
 	}
 	
 }

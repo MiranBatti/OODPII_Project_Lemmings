@@ -12,7 +12,7 @@ import view.Settings;
 
 public class Lemming extends Region implements Runnable
 {
-	private int x, y;
+	private double x, y;
 	private Jobs job;
 	private Node node;
 	private final int RIGHT = 0;
@@ -22,8 +22,9 @@ public class Lemming extends Region implements Runnable
 	private boolean isDead = false;
 	private List<Observer> observers = new ArrayList<Observer>();	
 	private Thread thread;
+	private boolean hasTeleported = false;
 	
-	public Lemming(int x, int y, Layer layer)
+	public Lemming(double x, double y, Layer layer)
 	{
 		this.x = x;
 		this.y = y;
@@ -36,12 +37,16 @@ public class Lemming extends Region implements Runnable
 	
 	public void setJob(Jobs job)
 	{
-		//TODO: cannot change jobs while falling
 		this.job = job;
 		Rectangle tmp = (Rectangle)node;
 		getChildren().remove(node);
 		node = job.changeView(tmp, x, y);
 		getChildren().add(node);
+	}
+	
+	public Jobs getJob()
+	{
+		return job;
 	}
 	
 	private Node createView()
@@ -52,14 +57,14 @@ public class Lemming extends Region implements Runnable
 	public void move()
 	{
 		notifyAllObservers();
-		if(direction == RIGHT && !job.equals(Faller.getInstance()))
-			node.relocate(x++, y);
-		if(direction == LEFT && !job.equals(Faller.getInstance()))
-			node.relocate(x--, y);
+		if(direction == RIGHT && job.equals(Walker.getInstance()))
+			node.relocate(x+=Settings.LEMMINGS_WALKING_SPEED, y);
+		if(direction == LEFT && job.equals(Walker.getInstance()))
+			node.relocate(x-=Settings.LEMMINGS_WALKING_SPEED, y);
 		if(job.equals(Faller.getInstance()))
-		{
-			node.relocate(x, y++);
-		}
+			node.relocate(x, y+=Settings.LEMMINGS_FALLING_SPEED);
+		if(job.equals(Parachute.getInstance()))
+			node.relocate(x, y+=Settings.LEMMINGS_FALLING_SPEED/2);
 	}
 	
 	public Node getBounds()
@@ -75,7 +80,7 @@ public class Lemming extends Region implements Runnable
       }
 	}
 
-	public int getX()
+	public double getX()
 	{
 		return x;
 	}
@@ -85,7 +90,7 @@ public class Lemming extends Region implements Runnable
 		this.direction = direction;
 	} 		
 	
-	public int getY()
+	public double getY()
 	{
 		return y;
 	}
@@ -99,12 +104,37 @@ public class Lemming extends Region implements Runnable
 	{
 	    observers.add(observer);		
 	}
+	
+	public void setInGoal()
+	{
+		hasTeleported = true;
+	}
 
 	@Override
 	public void run()
 	{
 		move();
 	}
+
+	public boolean getIfHasTeleported()
+	{
+		return hasTeleported;
+	}
+
+	public void setIsDead()
+	{
+		isDead = true;
+	}
 	
+	public boolean isDead()
+	{
+		return isDead;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return	"this Lemming";
+	}
 	
 }

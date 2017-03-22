@@ -1,6 +1,8 @@
 package model;
 
-public interface Selectable
-{
+import javafx.scene.Node;
 
+public interface Selectable 
+{
+	public Node getImage();
 }

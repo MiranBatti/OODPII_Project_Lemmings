@@ -5,32 +5,32 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Settings;
 
-public class Walker implements Jobs, Selectable
+public class Parachute implements Jobs, Selectable
 {
-	private static Walker instance = null;
+	private static Parachute instance = null;
 	
-	protected Walker()
+	protected Parachute()
 	{
 		
 	}
 	
-	public static Walker getInstance()
+	public static Parachute getInstance()
 	{
 		if(instance == null)
-			instance = new Walker();
+			instance = new Parachute();
 		return instance;
 	}
 	
 	@Override
 	public Node createView(double x, double y)
 	{
-		Rectangle rectangle = new Rectangle(Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT);
+		Rectangle rectangle = new Rectangle(Settings.LEMMINGS_WIDTH, Settings.LEMMINGS_HEIGHT*2);
 		
 		rectangle.setX(x);
 		rectangle.setY(y);
 		
-		rectangle.setStroke(Color.RED);
-		rectangle.setFill(Color.INDIANRED);
+		rectangle.setStroke(Color.BLUE);
+		rectangle.setFill(Color.ORANGERED);
 
 		return rectangle;
 	}
@@ -38,23 +38,17 @@ public class Walker implements Jobs, Selectable
 	@Override
 	public Node changeView(Rectangle node, double x, double y)
 	{
-		node.setStroke(Color.RED);
-		node.setFill(Color.MEDIUMVIOLETRED);
+		node.setStroke(Color.BLUE);
+		node.setFill(Color.ORANGERED);
 		
 		return node;
 	}
-	
+
+	@Override
 	public Node getImage()
 	{
 		Rectangle r = new Rectangle(Settings.SCENE_WIDTH/8, Settings.SCENE_HEIGHT/8);
-		r.setFill(Color.AQUA);
+		r.setFill(Color.DARKRED);
 		return r;
 	}
-	
-	@Override
-	public String toString()
-	{
-		return "this object";
-	}
-	
 }
