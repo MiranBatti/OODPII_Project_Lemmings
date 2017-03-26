@@ -8,13 +8,11 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.CollisionDetector;
 import model.Goal;
@@ -114,19 +112,20 @@ public class App extends Application {
 						toRemove.add(lemming);
 						gameField.getChildren().remove(lemming);
 						currentLemmings--;
-						System.out.println("lem is win!");
+//						System.out.println("lem is win!");
 					}
 					if(lemming.isDead())
 					{
 						toRemove.add(lemming);
 						gameField.getChildren().remove(lemming);
 						currentLemmings--;
-						System.out.println("lem is ded >:)");
+//						System.out.println("lem is ded >:)");
 					}
 					lemming.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
 						if(selected != null)
 						{
 							lemming.setJob((Jobs) selected);
+//							selected = null;
 						}
 					});
 				}

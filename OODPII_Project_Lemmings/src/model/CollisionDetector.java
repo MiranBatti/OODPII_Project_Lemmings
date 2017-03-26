@@ -1,10 +1,6 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.control.OverrunStyle;
-import javafx.scene.shape.Rectangle;
 import view.Settings;
 
 public class CollisionDetector extends Observer
@@ -21,7 +17,7 @@ public class CollisionDetector extends Observer
 		this.goal = goal;
 	}
 	
-	public void collisionDetection()
+	public void screenEdgeCollisionDetection()
 	{
 		for (Lemming lemming : lemmings)
 		{
@@ -32,7 +28,7 @@ public class CollisionDetector extends Observer
 		}		
 	}
 
-	public void collisionResolver(List<Obstacle> obstacles)
+	public void platormCollisionResolver(List<Obstacle> obstacles)
 	{
 		boolean falling = true;
 		for (Lemming lemming : lemmings) 
@@ -83,8 +79,8 @@ public class CollisionDetector extends Observer
 	public void update()
 	{
 		fallOutOfBoundsDetection(lemmings);
-		collisionDetection();
-		collisionResolver(obstacles);
+		screenEdgeCollisionDetection();
+		platormCollisionResolver(obstacles);
 		goalCollided(goal);
 	}
 	

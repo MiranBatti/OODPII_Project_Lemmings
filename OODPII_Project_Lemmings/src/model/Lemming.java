@@ -1,9 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
@@ -18,9 +16,9 @@ public class Lemming extends Region implements Runnable
 	private final int RIGHT = 0;
 	private final int LEFT = 1;
 	private int direction = RIGHT;
-	private int relative_x;
 	private boolean isDead = false;
 	private List<Observer> observers = new ArrayList<Observer>();	
+	@SuppressWarnings("unused")
 	private Thread thread;
 	private boolean hasTeleported = false;
 	
@@ -64,7 +62,7 @@ public class Lemming extends Region implements Runnable
 		if(job.equals(Faller.getInstance()))
 			node.relocate(x, y+=Settings.LEMMINGS_FALLING_SPEED);
 		if(job.equals(Parachute.getInstance()))
-			node.relocate(x, y+=Settings.LEMMINGS_FALLING_SPEED/2);
+			node.relocate(x, y+=Settings.LEMMINGS_FALLING_SPEED/4);
 	}
 	
 	public Node getBounds()
