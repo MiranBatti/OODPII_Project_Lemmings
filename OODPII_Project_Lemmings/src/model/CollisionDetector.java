@@ -25,6 +25,8 @@ public class CollisionDetector extends Observer
 				lemming.setDirection(LEFT);
 			if(lemming.getX() == 0)
 				lemming.setDirection(RIGHT);
+			fallOutOfBoundsDetection(lemming);
+			goalCollided(goal, lemming);
 		}		
 	}
 
@@ -58,30 +60,23 @@ public class CollisionDetector extends Observer
         }
 	}
 	
-	public void goalCollided(Goal goal)
+	private void goalCollided(Goal goal, Lemming lemming)
 	{
-		for (Lemming lemming : lemmings) {
-			if(goal.contains(lemming.getX(), lemming.getY()))
-				lemming.setInGoal();
-		}
+		if(goal.contains(lemming.getX(), lemming.getY()))
+			lemming.setInGoal();
 	}
 	
-	public void fallOutOfBoundsDetection(List<Lemming> lemmings)
+	private void fallOutOfBoundsDetection(Lemming lemming)
 	{
-		for (Lemming lemming : lemmings)
-		{
-			if(lemming.getY() > Settings.SCENE_HEIGHT)
-				lemming.setIsDead();
-		}
+		if(lemming.getY() > Settings.SCENE_HEIGHT)
+			lemming.setIsDead();
 	}
 	
 	@Override
 	public void update()
 	{
-		fallOutOfBoundsDetection(lemmings);
 		screenEdgeCollisionDetection();
 		platormCollisionResolver(obstacles);
-		goalCollided(goal);
 	}
 	
 }
